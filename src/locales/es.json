@@ -6,7 +6,7 @@
   "scoreboard": {
     "title": "Marcador de Generación",
     "description": "Puntuación media de cada generación (sobre 6)",
-    "avg": "Prom"
+    "avg": "Promedio"
   },
   "top10": {
     "title": "Top 10 Pokémon",
