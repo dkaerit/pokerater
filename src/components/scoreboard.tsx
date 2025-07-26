@@ -1,6 +1,6 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import {
   Card,
   CardContent,
@@ -36,10 +36,13 @@ export function Scoreboard({ scores }: ScoreboardProps) {
            <ResponsiveContainer width="100%" height={250}>
             <AreaChart data={scores} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
-                <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(var(--chart-2))" stopOpacity={0.8} />
-                  <stop offset="75%" stopColor="hsl(var(--chart-1))" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0.2}/>
+                <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset={0.5 / 6} stopColor="hsl(var(--chart-2))" />
+                  <stop offset={2.5 / 6} stopColor="hsl(var(--chart-2))" />
+                  <stop offset={2.5 / 6} stopColor="hsl(var(--chart-1))" />
+                  <stop offset={4.5 / 6} stopColor="hsl(var(--chart-1))" />
+                  <stop offset={4.5 / 6} stopColor="hsl(var(--destructive))" />
+                  <stop offset={1} stopColor="hsl(var(--destructive))" />
                 </linearGradient>
               </defs>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -49,14 +52,18 @@ export function Scoreboard({ scores }: ScoreboardProps) {
                 tickMargin={10}
                 axisLine={false}
               />
-              <YAxis domain={[0, 6]} tickLine={false} axisLine={false} tickMargin={10} />
+              <YAxis domain={[0, 6]} tickLine={false} axisLine={false} tickMargin={10} ticks={[0,2,4,6]} />
               <Tooltip
                 cursor={{ stroke: 'hsl(var(--primary))', strokeWidth: 1, strokeDasharray: '3 3' }}
                 content={<ChartTooltipContent indicator="dot" />}
               />
-              <ReferenceLine y={2.5} stroke="hsl(var(--destructive))" strokeDasharray="3 3" />
-              <ReferenceLine y={4.5} stroke="hsl(var(--chart-1))" strokeDasharray="3 3" />
-              <Area type="monotone" dataKey="score" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorScore)" />
+              <Area 
+                type="monotone" 
+                dataKey="score" 
+                stroke="hsl(var(--primary))" 
+                fill="url(#splitColor)" 
+                fillOpacity={0.8}
+              />
             </AreaChart>
           </ResponsiveContainer>
         </ChartContainer>
