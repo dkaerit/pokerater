@@ -301,10 +301,8 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
 
 export function PokeRater({ dictionary }: { dictionary: any }) {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="text-center p-8">Loading...</div>}>
             <PokeRaterComponent dictionary={dictionary} />
         </Suspense>
     )
 }
-
-    

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
@@ -13,6 +14,7 @@ export function usePokemonRatings(
 ) {
   const [ratings, setRatings] = useState<Ratings>({});
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
     let initialRatings: Ratings = {};
@@ -52,20 +54,20 @@ export function usePokemonRatings(
         }
     }
     setFavorites(initialFavorites);
-
+    setIsDataLoaded(true);
   }, [ratingsParam, favoritesParam]);
 
   useEffect(() => {
-    if (Object.keys(ratings).length > 0) {
+    if (isDataLoaded) {
       localStorage.setItem(POKERATER_STORAGE_KEY, JSON.stringify(ratings));
     }
-  }, [ratings]);
+  }, [ratings, isDataLoaded]);
 
   useEffect(() => {
-    if (favorites.length > 0) {
+    if (isDataLoaded) {
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
     }
-  }, [favorites]);
+  }, [favorites, isDataLoaded]);
 
   const handleRatingChange = useCallback((pokemonId: string, rating: number) => {
     setRatings((prev) => ({ ...prev, [pokemonId]: rating }));
