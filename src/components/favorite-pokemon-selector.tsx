@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { GripVertical, Trash2 } from "lucide-react";
+import { GripVertical, Plus, Trash2 } from "lucide-react";
 import { Pokemon, Ratings } from "@/lib/types";
 
 interface FavoritePokemonSelectorProps {
@@ -140,13 +140,24 @@ export function FavoritePokemonSelector({
                 {Array.from({ length: 10 - favorites.length }).map((_, index) => (
                     <li key={`placeholder-${index}`} className="flex items-center bg-muted/50 p-2 rounded-md border-dashed border-2 h-[58px]">
                        <span className="text-lg font-bold text-muted-foreground w-8">{favorites.length + index + 1}.</span>
+                       <Button 
+                        variant="ghost" 
+                        className="ml-auto" 
+                        onClick={() => setIsListVisible(true)} 
+                        disabled={sixStarPokemon.length === 0}
+                        aria-label="Add Pokémon"
+                       >
+                         <Plus className="w-5 h-5" />
+                       </Button>
                     </li>
                 ))}
               </ol>
             </ScrollArea>
-            <Button onClick={() => setIsListVisible(true)} className="mt-4 w-full" disabled={sixStarPokemon.length === 0}>
-                {sixStarPokemon.length === 0 ? "Rate Pokémon with 6 to select" : "Add/Change Favorites"}
-            </Button>
+             {favorites.length === 0 && sixStarPokemon.length === 0 && (
+              <p className="text-center text-sm text-muted-foreground mt-4 p-4 bg-muted/50 rounded-md">
+                Rate some Pokémon with 6 stars to add them to your favorites.
+              </p>
+            )}
           </div>
         )}
       </CardContent>
