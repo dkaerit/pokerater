@@ -34,7 +34,7 @@ async function fetchGenerations(): Promise<Generation[]> {
         return {
           id,
           name: p.name,
-          sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+          sprite: `https://raw.githubusercontent.com/master-boilerplate/master-boilerplate/main/src/assets/pokemons/${id}.gif`,
         };
       })
       .filter(Boolean)
