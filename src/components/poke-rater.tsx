@@ -126,8 +126,12 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
     if (shareableAreaRef.current === null) {
       return
     }
+    
+    const filter = (node: HTMLElement) => {
+        return (node.tagName !== 'LINK' || (node as HTMLLinkElement).rel !== 'stylesheet' || !(node as HTMLLinkElement).href.includes('fonts.googleapis.com'));
+    }
 
-    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827' })
+    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827', filter })
       .then((dataUrl) => {
         const link = document.createElement('a')
         link.download = 'pokerater-summary.png'
