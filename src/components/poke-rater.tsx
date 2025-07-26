@@ -14,10 +14,6 @@ import { FavoritePokemonSelector } from "./favorite-pokemon-selector";
 
 const MAX_GENERATIONS = 9;
 
-function padId(id: string) {
-    return id.padStart(4, '0');
-}
-
 async function fetchGenerations(): Promise<Generation[]> {
   const generationPromises = Array.from({ length: MAX_GENERATIONS }, (_, i) =>
     fetch(`https://pokeapi.co/api/v2/generation/${i + 1}`).then((res) =>
@@ -35,7 +31,6 @@ async function fetchGenerations(): Promise<Generation[]> {
           const id = urlParts[urlParts.length - 2];
           if (parseInt(id) > 1025) return null; // Filter out pokemon beyond Paldea region
           
-          // The API call is kept to validate pokemon existence, but sprite is from serebii
           return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
             .then(res => {
                 if (!res.ok) {
@@ -45,14 +40,10 @@ async function fetchGenerations(): Promise<Generation[]> {
             })
             .then(pokemonData => {
                 if (!pokemonData) return null;
-                // Construct Serebii URL for Scarlet/Violet 3D models
-                const paddedId = padId(id);
-                const spriteUrl = `https://www.serebii.net/scarletviolet/pokemon/new/${paddedId}.png`;
-                
                 return {
                   id,
                   name: p.name,
-                  sprite: spriteUrl,
+                  sprite: pokemonData.sprites.front_default,
                 };
             });
         })
@@ -63,7 +54,7 @@ async function fetchGenerations(): Promise<Generation[]> {
       return {
         id: gen.id,
         name: gen.name.replace('generation-','Generation '),
-        pokemon: pokemon.sort((a: {id: string}, b: {id: string}) => parseInt(a.id) - parseInt(b.id)),
+        pokemon: pokemon.sort((a: {id: string}, b: {id:string}) => parseInt(a.id) - parseInt(b.id)),
       };
     })
   );
