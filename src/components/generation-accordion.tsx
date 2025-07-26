@@ -19,6 +19,13 @@ interface GenerationAccordionProps {
   dictionary: any;
 }
 
+const getScoreColorClass = (score: number) => {
+  if (score < 2) return "text-[#e5475c]"; // Red
+  if (score < 4) return "text-[#c4920e]"; // Amber
+  return "text-[#1495a2]"; // Turquoise
+};
+
+
 const GenerationAccordionComponent = ({
   generation,
   ratings,
@@ -48,6 +55,8 @@ const GenerationAccordionComponent = ({
   }, [generationRatings]);
   
   const completionPercentage = (ratedCount / generation.pokemon.length) * 100;
+  
+  const scoreColorClass = getScoreColorClass(averageScore);
 
   return (
     <Accordion type="single" collapsible defaultValue={defaultOpen ? `item-${generation.id}` : undefined} className="w-full">
@@ -57,7 +66,7 @@ const GenerationAccordionComponent = ({
             <span>{generation.name}</span>
             <div className="flex items-center gap-4">
                <div className="text-sm font-body font-normal text-muted-foreground hidden md:block">{ratedCount} / {generation.pokemon.length}</div>
-               <span className="text-base font-body font-bold text-primary">{dictionary.scoreboard.avg}: {averageScore.toFixed(2)}</span>
+               <span className={`text-base font-body font-bold ${scoreColorClass}`}>{dictionary.scoreboard.avg}: {averageScore.toFixed(2)}</span>
             </div>
           </div>
         </AccordionTrigger>
