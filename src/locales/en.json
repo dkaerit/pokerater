@@ -6,7 +6,7 @@
   "scoreboard": {
     "title": "Generation Scoreboard",
     "description": "Average rating for each generation (out of 6)",
-    "avg": "Avg"
+    "avg": "Average"
   },
   "top10": {
     "title": "Top 10 Pokémon",
@@ -19,5 +19,17 @@
     "button": "Share Your Ratings",
     "toastTitle": "Link Copied!",
     "toastDescription": "Your ratings have been copied to the clipboard."
+  },
+  "globalStats": {
+    "button": "Global Stats",
+    "backButton": "Back to Rater",
+    "title": "Global Pokémon Statistics",
+    "description": "See which Pokémon and generations are the most popular worldwide!",
+    "top10Title": "Top 10 Popular Pokémon",
+    "top10Description": "Based on total 6-star ratings from all users.",
+    "topGenerationsTitle": "Most Popular Generations",
+    "topGenerationsDescription": "Ranked by average user score.",
+    "pokemon": "Pokémon",
+    "votes": "Votes"
   }
 }

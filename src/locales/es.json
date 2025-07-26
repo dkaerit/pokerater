@@ -19,5 +19,17 @@
     "button": "Compartir tus Valoraciones",
     "toastTitle": "¡Enlace Copiado!",
     "toastDescription": "Tus valoraciones se han copiado al portapapeles."
+  },
+  "globalStats": {
+    "button": "Estadísticas Globales",
+    "backButton": "Volver al Rater",
+    "title": "Estadísticas Globales de Pokémon",
+    "description": "¡Descubre qué Pokémon y generaciones son las más populares en todo el mundo!",
+    "top10Title": "Top 10 Pokémon Populares",
+    "top10Description": "Basado en el total de valoraciones de 6 estrellas de todos los usuarios.",
+    "topGenerationsTitle": "Generaciones Más Populares",
+    "topGenerationsDescription": "Clasificadas por la puntuación media de los usuarios.",
+    "pokemon": "Pokémon",
+    "votes": "Votos"
   }
 }
