@@ -3,7 +3,6 @@ import { GlobalStats } from "@/components/global-stats";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
-import { mockGlobalPokemonData, mockGlobalGenerationData } from "@/lib/mock-data";
 
 export default async function StatsPage() {
   const dictionary = await getDictionary('es');
@@ -21,8 +20,8 @@ export default async function StatsPage() {
 
       <GlobalStats 
         dictionary={dictionary}
-        topPokemon={mockGlobalPokemonData}
-        topGenerations={mockGlobalGenerationData}
+        topPokemon={[]}
+        topGenerations={[]}
       />
 
     </main>
