@@ -1,0 +1,21 @@
+1:"$Sreact.fragment"
+2:I[87555,[],""]
+3:I[31295,[],""]
+4:I[6874,["874","static/chunks/874-9cb21b75b8a2c1ed.js","345","static/chunks/app/not-found-dfd76f7059f48f1a.js"],""]
+5:I[31942,["118","static/chunks/118-17f9d40139aada40.js","177","static/chunks/app/layout-c17015a75bde944a.js"],"Toaster"]
+7:I[59665,[],"MetadataBoundary"]
+9:I[59665,[],"OutletBoundary"]
+c:I[74911,[],"AsyncMetadataOutlet"]
+e:I[59665,[],"ViewportBoundary"]
+10:I[26614,[],""]
+:HL["/_next/static/css/c95e598ad9996752.css","style"]
+0:{"P":null,"b":"pYWS0QV96CXEkf2GlfiXy","p":"","c":["",""],"i":false,"f":[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/c95e598ad9996752.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"dark","children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap","rel":"stylesheet"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap","rel":"stylesheet"}]]}],["$","body",null,{"className":"font-body antialiased","children":[["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","div",null,{"className":"flex flex-col items-center justify-center min-h-screen text-center","children":[["$","h1",null,{"className":"text-4xl font-bold","children":"404 - Page Not Found"}],["$","p",null,{"className":"mt-4 text-lg","children":"Oops! The page you are looking for does not exist."}],["$","$L4",null,{"href":"/","className":"mt-8 px-4 py-2 text-white bg-primary rounded-md hover:bg-primary/90","children":"Go back home"}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","$L5",null,{}]]}]]}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L6",["$","$L7",null,{"children":"$L8"}],null,["$","$L9",null,{"children":["$La","$Lb",["$","$Lc",null,{"promise":"$@d"}]]}]]}],{},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","f8SkP2WhkE7Etkry1V2rT",{"children":[["$","$Le",null,{"children":"$Lf"}],null]}],null]}],false]],"m":"$undefined","G":["$10","$undefined"],"s":false,"S":true}
+6:E{"digest":"NEXT_REDIRECT;replace;/es;307;"}
+11:"$Sreact.suspense"
+12:I[74911,[],"AsyncMetadata"]
+8:["$","$11",null,{"fallback":null,"children":["$","$L12",null,{"promise":"$@13"}]}]
+b:null
+f:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+a:null
+13:{"metadata":[["$","title","0",{"children":"PokeRater"}],["$","meta","1",{"name":"description","content":"Rate your favorite Pokemon and share with friends!"}],["$","link","2",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}]],"error":null,"digest":"$undefined"}
+d:{"metadata":"$13:metadata","error":null,"digest":"$undefined"}
