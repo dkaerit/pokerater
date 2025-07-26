@@ -31,6 +31,7 @@ export function PokemonCard({ pokemon, rating, onRatingChange }: PokemonCardProp
             className="object-contain"
             unoptimized
             data-ai-hint="pokemon sprite"
+            loading="lazy"
           />
         </div>
         <CardTitle className="text-sm md:text-base font-medium capitalize mt-2 tracking-tight">

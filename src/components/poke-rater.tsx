@@ -10,8 +10,9 @@ import { usePokemonRatings } from "@/hooks/use-pokemon-ratings";
 import type { Generation } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Share2 } from "lucide-react";
+import { FavoritePokemonSelector } from "./favorite-pokemon-selector";
 
-const MAX_GENERATIONS = 6;
+const MAX_GENERATIONS = 9;
 
 async function fetchGenerations(): Promise<Generation[]> {
   const generationPromises = Array.from({ length: MAX_GENERATIONS }, (_, i) =>
@@ -29,12 +30,14 @@ async function fetchGenerations(): Promise<Generation[]> {
       .map((p: { name: string; url: string }) => {
         const urlParts = p.url.split("/");
         const id = urlParts[urlParts.length - 2];
+        if (parseInt(id) > 1025) return null; // Filter out pokemon beyond Paldea region
         return {
           id,
           name: p.name,
           sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
         };
       })
+      .filter(Boolean)
       .sort((a: {id: string}, b: {id: string}) => parseInt(a.id) - parseInt(b.id)),
   }));
 }
@@ -42,6 +45,7 @@ async function fetchGenerations(): Promise<Generation[]> {
 function PokeRaterComponent() {
   const searchParams = useSearchParams();
   const ratingsParam = searchParams.get("ratings");
+  const favoritesParam = searchParams.get("favorites");
   const { toast } = useToast();
 
   const [generations, setGenerations] = useState<Generation[]>([]);
@@ -49,10 +53,13 @@ function PokeRaterComponent() {
 
   const {
     ratings,
+    favorites,
     handleRatingChange,
+    handleFavoritesChange,
     generationScores,
     generateShareableLink,
-  } = usePokemonRatings(generations, ratingsParam);
+    allPokemon,
+  } = usePokemonRatings(generations, ratingsParam, favoritesParam);
   
   useEffect(() => {
     async function loadData() {
@@ -116,7 +123,17 @@ function PokeRaterComponent() {
       </header>
 
       <div className="space-y-6">
-        <Scoreboard scores={generationScores} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Scoreboard scores={generationScores} />
+          </div>
+          <FavoritePokemonSelector 
+            allPokemon={allPokemon}
+            ratings={ratings}
+            favorites={favorites}
+            onFavoritesChange={handleFavoritesChange}
+          />
+        </div>
         
         <div className="flex justify-end">
           <Button onClick={handleShare}>
@@ -148,4 +165,3 @@ export function PokeRater() {
         </Suspense>
     )
 }
-
