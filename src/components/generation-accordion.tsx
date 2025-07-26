@@ -50,9 +50,9 @@ const GenerationAccordionComponent = ({
   return (
     <Accordion type="single" collapsible defaultValue={defaultOpen ? `item-${generation.id}` : undefined} className="w-full">
       <AccordionItem value={`item-${generation.id}`} className="border-b-0">
-        <AccordionTrigger className="text-lg font-headline font-semibold capitalize hover:no-underline rounded-lg bg-card p-4">
+        <AccordionTrigger className="text-lg font-headline font-semibold hover:no-underline rounded-lg bg-card p-4">
           <div className="flex justify-between w-full items-center pr-4">
-            <span>{generation.name.replace('generation-', 'Generation ')}</span>
+            <span>{generation.name}</span>
             <div className="flex items-center gap-4">
                <div className="text-sm font-body font-normal text-muted-foreground hidden md:block">{ratedCount} / {generation.pokemon.length}</div>
                <span className="text-base font-body font-bold text-primary">Avg: {averageScore.toFixed(2)}</span>

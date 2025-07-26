@@ -53,7 +53,7 @@ async function fetchGenerations(): Promise<Generation[]> {
 
       return {
         id: gen.id,
-        name: gen.name.replace('generation-','Generation '),
+        name: `Generation ${gen.id}`,
         pokemon: pokemon.sort((a: {id: string}, b: {id:string}) => parseInt(a.id) - parseInt(b.id)),
       };
     })
