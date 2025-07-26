@@ -13,10 +13,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import type { Score } from "@/lib/types";
+import { useMemo } from "react";
 
-interface ScoreboardProps {
-  scores: Score[];
-}
 
 const chartConfig = {
   score: {
@@ -24,7 +22,23 @@ const chartConfig = {
   },
 };
 
+const CustomDot = (props: any) => {
+  const { cx, cy, payload } = props;
+
+  let fillColor = "#e5475c";
+  if (payload.score >= 4) {
+    fillColor = "#1495a2";
+  } else if (payload.score >= 2) {
+    fillColor = "#c4920e";
+  }
+
+  return <circle cx={cx} cy={cy} r={6} stroke="#fff" strokeWidth={2} fill={fillColor} />;
+};
+
+
 export function Scoreboard({ scores }: ScoreboardProps) {
+    const activeDot = useMemo(() => <CustomDot />, []);
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -37,20 +51,18 @@ export function Scoreboard({ scores }: ScoreboardProps) {
             <AreaChart data={scores} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset={0.5 / 6} stopColor="#033136" stopOpacity={0.8}/>
-                  <stop offset={2.5 / 6} stopColor="#033136" stopOpacity={0.8}/>
-                  <stop offset={2.5 / 6} stopColor="#3a2f0f" stopOpacity={0.8}/>
-                  <stop offset={4.5 / 6} stopColor="#3a2f0f" stopOpacity={0.8}/>
-                  <stop offset={4.5 / 6} stopColor="#380815" stopOpacity={0.8}/>
-                  <stop offset={1} stopColor="#380815" stopOpacity={0.8}/>
+                  <stop offset={(6 - 4) / 6} stopColor="#1495a2" stopOpacity={0.4}/>
+                  <stop offset={(6 - 4) / 6} stopColor="#c4920e" stopOpacity={0.4}/>
+                  <stop offset={(6 - 2) / 6} stopColor="#c4920e" stopOpacity={0.4}/>
+                  <stop offset={(6 - 2) / 6} stopColor="#e5475c" stopOpacity={0.4}/>
+                  <stop offset={1} stopColor="#e5475c" stopOpacity={0.4}/>
                 </linearGradient>
                 <linearGradient id="splitColorStroke" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset={0.5 / 6} stopColor="#054b53" />
-                  <stop offset={2.5 / 6} stopColor="#054b53" />
-                  <stop offset={2.5 / 6} stopColor="#5c4a18" />
-                  <stop offset={4.5 / 6} stopColor="#5c4a18" />
-                  <stop offset={4.5 / 6} stopColor="#570d22" />
-                  <stop offset={1} stopColor="#570d22" />
+                  <stop offset={(6 - 4) / 6} stopColor="#1495a2" />
+                  <stop offset={(6 - 4) / 6} stopColor="#c4920e" />
+                  <stop offset={(6 - 2) / 6} stopColor="#c4920e" />
+                  <stop offset={(6 - 2) / 6} stopColor="#e5475c" />
+                  <stop offset={1} stopColor="#e5475c" />
                 </linearGradient>
               </defs>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -71,6 +83,7 @@ export function Scoreboard({ scores }: ScoreboardProps) {
                 stroke="url(#splitColorStroke)"
                 fill="url(#splitColor)" 
                 strokeWidth={3}
+                activeDot={activeDot}
               />
             </AreaChart>
           </ResponsiveContainer>

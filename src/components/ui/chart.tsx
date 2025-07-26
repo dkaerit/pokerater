@@ -192,7 +192,7 @@ const ChartTooltipContent = React.forwardRef<
             const score = item.value as number;
             let indicatorColor: string;
 
-            if (score >= 5) {
+            if (score >= 4) {
               indicatorColor = "#1495a2"; // Turquoise
             } else if (score >= 2) {
               indicatorColor = "#c4920e"; // Orange/Amber
