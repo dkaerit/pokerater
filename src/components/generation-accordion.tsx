@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { PokemonCard } from "@/components/pokemon-card";
 import type { Generation, Ratings } from "@/lib/types";
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import { Progress } from "@/components/ui/progress";
 
 interface GenerationAccordionProps {
@@ -18,22 +18,32 @@ interface GenerationAccordionProps {
   defaultOpen?: boolean;
 }
 
-export function GenerationAccordion({
+const GenerationAccordionComponent = ({
   generation,
   ratings,
   onRatingChange,
   defaultOpen = false,
-}: GenerationAccordionProps) {
-  const averageScore = useMemo(() => {
-    const ratedPokemon = generation.pokemon.filter((p) => ratings[p.id] !== undefined);
-    if (ratedPokemon.length === 0) return 0;
-    const totalScore = ratedPokemon.reduce((acc, p) => acc + (ratings[p.id] ?? 0), 0);
-    return totalScore / ratedPokemon.length;
+}: GenerationAccordionProps) => {
+  const generationRatings = useMemo(() => {
+    const relevantRatings: Ratings = {};
+    for (const pokemon of generation.pokemon) {
+      if (ratings[pokemon.id] !== undefined) {
+        relevantRatings[pokemon.id] = ratings[pokemon.id];
+      }
+    }
+    return relevantRatings;
   }, [generation.pokemon, ratings]);
 
+  const averageScore = useMemo(() => {
+    const ratedIds = Object.keys(generationRatings);
+    if (ratedIds.length === 0) return 0;
+    const totalScore = ratedIds.reduce((acc, id) => acc + (generationRatings[id] ?? 0), 0);
+    return totalScore / ratedIds.length;
+  }, [generationRatings]);
+
   const ratedCount = useMemo(() => {
-     return generation.pokemon.filter((p) => ratings[p.id] !== undefined).length;
-  }, [generation.pokemon, ratings]);
+     return Object.keys(generationRatings).length;
+  }, [generationRatings]);
   
   const completionPercentage = (ratedCount / generation.pokemon.length) * 100;
 
@@ -65,4 +75,6 @@ export function GenerationAccordion({
       </AccordionItem>
     </Accordion>
   );
-}
+};
+
+export const GenerationAccordion = memo(GenerationAccordionComponent);

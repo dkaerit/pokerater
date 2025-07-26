@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import type { Pokemon } from "@/lib/types";
+import { memo } from "react";
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -14,7 +15,7 @@ interface PokemonCardProps {
 
 const RATING_VALUES = [0, 1, 2, 3, 4, 5, 6];
 
-export function PokemonCard({ pokemon, rating, onRatingChange }: PokemonCardProps) {
+const PokemonCardComponent = ({ pokemon, rating, onRatingChange }: PokemonCardProps) => {
   const handleValueChange = (value: string) => {
     onRatingChange(pokemon.id, parseInt(value, 10));
   };
@@ -56,3 +57,5 @@ export function PokemonCard({ pokemon, rating, onRatingChange }: PokemonCardProp
     </Card>
   );
 }
+
+export const PokemonCard = memo(PokemonCardComponent);
