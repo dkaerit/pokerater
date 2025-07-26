@@ -14,6 +14,10 @@ import { FavoritePokemonSelector } from "./favorite-pokemon-selector";
 
 const MAX_GENERATIONS = 9;
 
+function padId(id: string) {
+    return id.padStart(4, '0');
+}
+
 async function fetchGenerations(): Promise<Generation[]> {
   const generationPromises = Array.from({ length: MAX_GENERATIONS }, (_, i) =>
     fetch(`https://pokeapi.co/api/v2/generation/${i + 1}`).then((res) =>
@@ -31,21 +35,24 @@ async function fetchGenerations(): Promise<Generation[]> {
           const id = urlParts[urlParts.length - 2];
           if (parseInt(id) > 1025) return null; // Filter out pokemon beyond Paldea region
           
-          // Fetch individual pokemon data for the sprite
+          // The API call is kept to validate pokemon existence, but sprite is from serebii
           return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
             .then(res => {
                 if (!res.ok) {
-                    // This pokemon might not have a valid entry, skip it.
                     return null;
                 }
                 return res.json();
             })
             .then(pokemonData => {
                 if (!pokemonData) return null;
+                // Construct Serebii URL for Scarlet/Violet 3D models
+                const paddedId = padId(id);
+                const spriteUrl = `https://www.serebii.net/scarletviolet/pokemon/new/${paddedId}.png`;
+                
                 return {
                   id,
                   name: p.name,
-                  sprite: pokemonData.sprites.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+                  sprite: spriteUrl,
                 };
             });
         })
