@@ -83,7 +83,7 @@ export function usePokemonRatings(
     const jsonFavorites = JSON.stringify(favorites);
     const base64Favorites = btoa(jsonFavorites);
 
-    const url = new URL(window.location.origin + (process.env.NEXT_PUBLIC_BASE_PATH || '') + window.location.pathname.replace(process.env.NEXT_PUBLIC_BASE_PATH || '', ''));
+    const url = new URL(window.location.origin + window.location.pathname);
     url.searchParams.set("ratings", base64Ratings);
     url.searchParams.set("favorites", base64Favorites);
     return url.toString();
