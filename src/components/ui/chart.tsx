@@ -188,7 +188,17 @@ const ChartTooltipContent = React.forwardRef<
           {payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`
             const itemConfig = getPayloadConfigFromPayload(config, item, key)
-            const indicatorColor = color || item.payload.fill || item.color
+            
+            const score = item.value as number;
+            let indicatorColor: string;
+
+            if (score > 4.5) {
+              indicatorColor = "hsl(var(--chart-2))"; // Turquoise
+            } else if (score > 2.5) {
+              indicatorColor = "hsl(var(--chart-4))"; // Orange
+            } else {
+              indicatorColor = "hsl(var(--chart-1))"; // Red
+            }
 
             return (
               <div
