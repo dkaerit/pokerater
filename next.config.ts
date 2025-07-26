@@ -1,10 +1,14 @@
 import type {NextConfig} from 'next';
 
+const repo = 'pokerater';
+const assetPrefix = `/${repo}/`;
+const basePath = `/${repo}`;
+
 const nextConfig: NextConfig = {
   /* config options here */
   output: 'export',
-  // basePath: '/pokerater', // Ya no es necesario con la nueva configuración del middleware
-  // assetPrefix: '/pokerater/', // Ya no es necesario con la nueva configuración del middleware
+  assetPrefix: assetPrefix,
+  basePath: basePath,
   typescript: {
     ignoreBuildErrors: true,
   },
