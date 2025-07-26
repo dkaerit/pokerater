@@ -7,6 +7,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { BarChart3 } from "lucide-react";
 
+export async function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'es' }]
+}
+
 function LoadingSkeleton() {
   return (
     <div className="space-y-8">

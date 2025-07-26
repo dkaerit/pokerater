@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import { LanguageSwitcher } from "@/components/language-switcher";
 
+export async function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'es' }]
+}
+
 export default async function StatsPage({ params: { lang } }: { params: { lang: string } }) {
   const dictionary = await getDictionary(lang);
 
