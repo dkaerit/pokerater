@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -9,7 +10,6 @@ import {
 import { PokemonCard } from "@/components/pokemon-card";
 import type { Generation, Ratings } from "@/lib/types";
 import { useMemo, memo, useState, useEffect } from "react";
-import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "./ui/skeleton";
 import { AlertCircle, RotateCw } from "lucide-react";
 import { Button } from "./ui/button";
@@ -85,8 +85,6 @@ const GenerationAccordionComponent = ({
      return Object.keys(generationRatings).length;
   }, [generationRatings]);
   
-  const completionPercentage = (ratedCount / generation.pokemon.length) * 100;
-  
   const scoreColorClass = getScoreColorClass(averageScore);
 
   return (
@@ -102,7 +100,6 @@ const GenerationAccordionComponent = ({
           </div>
         </AccordionTrigger>
         <AccordionContent className="pt-4">
-          <Progress value={completionPercentage} className="mb-4 h-2" />
           {isLoading && (
              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {Array.from({ length: 12 }).map((_, i) => <Skeleton key={i} className="h-48 w-full" />)}
