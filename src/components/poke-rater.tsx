@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, Suspense, useRef, useCallback } from "react";
@@ -111,6 +112,27 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
     loadInitialData();
   }, [loadInitialData]);
 
+  // Fetch favorite pokemon details on initial load
+  useEffect(() => {
+    if (favorites.length > 0 && allPokemon.length > 0) {
+      const favoritePokemon = allPokemon.filter(p => favorites.includes(p.id));
+      const unfetchedFavorites = favoritePokemon.filter(p => !p.sprite);
+
+      if (unfetchedFavorites.length > 0) {
+        fetchPokemonDetailsForGeneration(unfetchedFavorites).then(detailedFavorites => {
+          const detailedMap = new Map(detailedFavorites.map(p => [p.id, p]));
+          
+          setGenerations(prevGens => {
+            return prevGens.map(gen => ({
+              ...gen,
+              pokemon: gen.pokemon.map(p => detailedMap.get(p.id) || p)
+            }))
+          })
+        });
+      }
+    }
+  }, [favorites, allPokemon]);
+
 
   const handleFetchGeneration = useCallback(async (generationId: number) => {
       const generationIndex = generations.findIndex(g => g.id === generationId);
@@ -157,7 +179,7 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
       return true;
     }
 
-    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827', filter })
+    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: 'hsl(var(--background))', filter })
       .then((dataUrl) => {
         const link = document.createElement('a')
         link.download = 'pokerater-summary.png'
@@ -284,3 +306,5 @@ export function PokeRater({ dictionary }: { dictionary: any }) {
         </Suspense>
     )
 }
+
+    
