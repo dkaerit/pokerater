@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { mockGlobalPokemonData, mockGlobalGenerationData } from "@/lib/mock-data";
 
 export async function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'es' }]
@@ -11,11 +12,6 @@ export async function generateStaticParams() {
 
 export default async function StatsPage({ params: { lang } }: { params: { lang: string } }) {
   const dictionary = await getDictionary(lang);
-
-  // Data will be fetched from a database in a real app
-  const mockGlobalPokemonData: any[] = [];
-  const mockGlobalGenerationData: any[] = [];
-
 
   return (
     <main className="container mx-auto py-8 px-4">
