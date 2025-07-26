@@ -45,10 +45,10 @@ export function Scoreboard({ scores }: ScoreboardProps) {
                   <stop offset={1} stopColor="#380815" stopOpacity={0.8}/>
                 </linearGradient>
                 <linearGradient id="splitColorStroke" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset={0.5 / 6} stopColor="#033136" />
-                  <stop offset={2.5 / 6} stopColor="#033136" />
-                  <stop offset={2.5 / 6} stopColor="#3a2f0f" />
-                  <stop offset={4.5 / 6} stopColor="#3a2f0f" />
+                  <stop offset={0.5 / 6} stopColor="#380815" />
+                  <stop offset={2.5 / 6} stopColor="#380815" />
+                  <stop offset={2.5 / 6} stopColor="#380815" />
+                  <stop offset={4.5 / 6} stopColor="#380815" />
                   <stop offset={4.5 / 6} stopColor="#380815" />
                   <stop offset={1} stopColor="#380815" />
                 </linearGradient>
