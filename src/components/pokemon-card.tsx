@@ -16,9 +16,9 @@ const RATING_VALUES = [0, 1, 2, 3, 4, 5, 6];
 
 const getRatingColor = (rating: number | undefined) => {
   if (rating === undefined) return 'transparent';
-  if (rating < 2) return '#e5475c'; // Red
-  if (rating < 4) return '#c4920e'; // Amber
-  return '#1495a2'; // Turquoise
+  if (rating < 2) return 'rgb(255,104,102)'; // Red
+  if (rating < 4) return 'rgb(221,186,92)'; // Amber
+  return 'rgb(61,196,209)'; // Turquoise
 };
 
 const PokemonCardComponent = ({ pokemon, rating, onRatingChange }: PokemonCardProps) => {

@@ -25,11 +25,11 @@ const chartConfig = {
 const CustomDot = (props: any) => {
   const { cx, cy, payload } = props;
 
-  let fillColor = "#e5475c"; // Red for score < 2
+  let fillColor = "rgb(255,104,102)"; // Red for score < 2
   if (payload.score >= 4) {
-    fillColor = "#1495a2"; // Turquoise for score >= 4
+    fillColor = "rgb(61,196,209)"; // Turquoise for score >= 4
   } else if (payload.score >= 2) {
-    fillColor = "#c4920e"; // Amber for score >= 2
+    fillColor = "rgb(221,186,92)"; // Amber for score >= 2
   }
 
   return <circle cx={cx} cy={cy} r={6} stroke="#fff" strokeWidth={2} fill={fillColor} />;
@@ -56,11 +56,11 @@ export function Scoreboard({ scores, dictionary }: { scores: Score[], dictionary
             <AreaChart data={scores} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="splitColorStroke" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0.33" stopColor="#1495a2" /> 
-                  <stop offset="0.33" stopColor="#c4920e" />
-                  <stop offset="0.66" stopColor="#c4920e" />
-                  <stop offset="0.66" stopColor="#e5475c" />
-                  <stop offset="1" stopColor="#e5475c" />
+                  <stop offset="0.33" stopColor="rgb(61,196,209)" /> 
+                  <stop offset="0.33" stopColor="rgb(221,186,92)" />
+                  <stop offset="0.66" stopColor="rgb(221,186,92)" />
+                  <stop offset="0.66" stopColor="rgb(255,104,102)" />
+                  <stop offset="1" stopColor="rgb(255,104,102)" />
                 </linearGradient>
               </defs>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />

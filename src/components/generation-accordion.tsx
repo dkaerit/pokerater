@@ -20,9 +20,9 @@ interface GenerationAccordionProps {
 }
 
 const getScoreColorClass = (score: number) => {
-  if (score < 2) return "text-[#e5475c]"; // Red
-  if (score < 4) return "text-[#c4920e]"; // Amber
-  return "text-[#1495a2]"; // Turquoise
+  if (score < 2) return "text-[rgb(255,104,102)]"; // Red
+  if (score < 4) return "text-[rgb(221,186,92)]"; // Amber
+  return "text-[rgb(61,196,209)]"; // Turquoise
 };
 
 
