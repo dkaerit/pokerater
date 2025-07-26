@@ -9,7 +9,7 @@ import { GenerationAccordion } from "@/components/generation-accordion";
 import { usePokemonRatings } from "@/hooks/use-pokemon-ratings";
 import type { Generation, Pokemon } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
-import { Share2, Link as LinkIcon, ImageDown } from "lucide-react";
+import { Share2, Link as LinkIcon, ImageDown, AlertCircle } from "lucide-react";
 import { FavoritePokemonSelector } from "./favorite-pokemon-selector";
 import {
   DropdownMenu,
@@ -22,56 +22,46 @@ import * as htmlToImage from 'html-to-image';
 
 const MAX_GENERATIONS = 9;
 
-async function fetchGenerations(dictionary: any): Promise<Generation[]> {
+async function fetchInitialGenerationList(dictionary: any): Promise<Generation[]> {
   const generationPromises = Array.from({ length: MAX_GENERATIONS }, (_, i) =>
     fetch(`https://pokeapi.co/api/v2/generation/${i + 1}`).then((res) =>
       res.json()
     )
   );
-
   const generationResults = await Promise.all(generationPromises);
 
-  const generationsWithPokemon = await Promise.all(
-    generationResults.map(async (gen) => {
-      const pokemonPromises = gen.pokemon_species
-        .map((p: { name: string; url: string }) => {
-          const urlParts = p.url.split("/");
-          const id = urlParts[urlParts.length - 2];
-          if (parseInt(id) > 1025) return null; // Filter out pokemon beyond Paldea region
-          
-          return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-            .then(res => {
-                if (!res.ok) {
-                    return null;
-                }
-                return res.json();
-            })
-            .then(pokemonData => {
-                if (!pokemonData) return null;
-                return {
-                  id,
-                  name: p.name,
-                  sprite: pokemonData.sprites.front_default,
-                };
-            })
-            .catch(error => {
-                console.warn(`Could not fetch data for pokemon id ${id}`, error);
-                return null; // Return null if fetch fails for any reason
-            });
+  return generationResults.map((gen) => ({
+    id: gen.id,
+    name: `${dictionary.generation} ${gen.id}`,
+    pokemon: gen.pokemon_species.map((p: { name: string, url: string }) => {
+        const urlParts = p.url.split("/");
+        const id = urlParts[urlParts.length - 2];
+        return { id, name: p.name };
+    }).filter((p: Pokemon) => parseInt(p.id) <= 1025)
+     .sort((a: Pokemon, b: Pokemon) => parseInt(a.id) - parseInt(b.id)),
+  }));
+}
+
+async function fetchPokemonDetailsForGeneration(pokemonList: Pokemon[]): Promise<Pokemon[]> {
+    const pokemonPromises = pokemonList.map(p => 
+        fetch(`https://pokeapi.co/api/v2/pokemon/${p.id}`)
+        .then(res => {
+            if (!res.ok) return null;
+            return res.json();
         })
-        .filter(Boolean);
-
-      const pokemon = (await Promise.all(pokemonPromises)).filter((p): p is Pokemon => p !== null);
-
-      return {
-        id: gen.id,
-        name: `${dictionary.generation} ${gen.id}`,
-        pokemon: pokemon.sort((a: {id: string}, b: {id:string}) => parseInt(a.id) - parseInt(b.id)),
-      };
-    })
-  );
-
-  return generationsWithPokemon;
+        .then(pokemonData => {
+            if (!pokemonData) return { ...p, sprite: undefined };
+            return {
+                ...p,
+                sprite: pokemonData.sprites.front_default,
+            };
+        })
+        .catch(error => {
+            console.warn(`Could not fetch data for pokemon id ${p.id}`, error);
+            return { ...p, sprite: undefined };
+        })
+    );
+    return Promise.all(pokemonPromises);
 }
 
 
@@ -83,6 +73,7 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
 
   const [generations, setGenerations] = useState<Generation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const shareableAreaRef = useRef<HTMLDivElement>(null);
 
@@ -97,25 +88,52 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
     allPokemon,
   } = usePokemonRatings(generations, ratingsParam, favoritesParam);
   
-  useEffect(() => {
-    async function loadData() {
+  const loadInitialData = useCallback(async () => {
       setIsLoading(true);
+      setError(null);
       try {
-        const data = await fetchGenerations(dictionary);
+        const data = await fetchInitialGenerationList(dictionary);
         setGenerations(data);
-      } catch (error) {
-        console.error("Failed to fetch Pokemon data", error);
+      } catch (e) {
+        console.error("Failed to fetch initial Pokemon data", e);
+        setError(dictionary.errors?.initialLoad || "Could not load generation data. Please refresh.");
         toast({
           title: "Error",
-          description: "Could not fetch Pokémon data. Please try again later.",
+          description: dictionary.errors?.initialLoadToast || "Could not fetch generation data. Please try again later.",
           variant: "destructive",
         });
       } finally {
         setIsLoading(false);
       }
-    }
-    loadData();
   }, [toast, dictionary]);
+
+  useEffect(() => {
+    loadInitialData();
+  }, [loadInitialData]);
+
+
+  const handleFetchGeneration = useCallback(async (generationId: number) => {
+      const generationIndex = generations.findIndex(g => g.id === generationId);
+      if (generationIndex === -1) return;
+
+      const generationToFetch = generations[generationIndex];
+      // Avoid refetching if data is already present
+      if (generationToFetch.pokemon.every(p => p.sprite !== undefined)) {
+          return;
+      }
+      
+      const detailedPokemon = await fetchPokemonDetailsForGeneration(generationToFetch.pokemon);
+
+      setGenerations(prev => {
+          const newGenerations = [...prev];
+          newGenerations[generationIndex] = {
+              ...newGenerations[generationIndex],
+              pokemon: detailedPokemon,
+          };
+          return newGenerations;
+      });
+  }, [generations]);
+
 
   const handleShareLink = () => {
     const link = generateShareableLink();
@@ -181,6 +199,19 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
     );
   }
 
+  if (error) {
+    return (
+        <div className="text-center py-10">
+            <AlertCircle className="mx-auto h-12 w-12 text-destructive" />
+            <h2 className="mt-4 text-lg font-semibold">{dictionary.errors?.ohNo || 'Oh no!'}</h2>
+            <p className="mt-2 text-muted-foreground">{error}</p>
+            <Button onClick={loadInitialData} className="mt-6">
+                {dictionary.errors?.retry || 'Retry'}
+            </Button>
+        </div>
+    )
+  }
+
   return (
     <div className="max-w-7xl mx-auto">
       <header className="text-center mb-8">
@@ -236,6 +267,7 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
               generation={gen}
               ratings={ratings}
               onRatingChange={handleRatingChange}
+              onFetchGeneration={handleFetchGeneration}
               dictionary={dictionary}
             />
           ))}

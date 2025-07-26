@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Pokemon } from "@/lib/types";
 import { memo } from "react";
 import './pokemon-card.css';
+import { Skeleton } from "./ui/skeleton";
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -32,16 +33,20 @@ const PokemonCardComponent = ({ pokemon, rating, onRatingChange }: PokemonCardPr
     <Card className="flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:border-primary">
       <CardHeader className="p-4">
         <div className="relative w-24 h-24 mx-auto">
-          <Image
-            src={pokemon.sprite}
-            alt={pokemon.name}
-            width={96}
-            height={96}
-            className="object-contain"
-            unoptimized
-            data-ai-hint="pokemon sprite"
-            loading="lazy"
-          />
+          {pokemon.sprite ? (
+            <Image
+                src={pokemon.sprite}
+                alt={pokemon.name}
+                width={96}
+                height={96}
+                className="object-contain"
+                unoptimized
+                data-ai-hint="pokemon sprite"
+                loading="lazy"
+            />
+          ) : (
+             <Skeleton className="w-24 h-24 rounded-full" />
+          )}
         </div>
         <CardTitle className="text-sm md:text-base font-medium capitalize mt-2 tracking-tight">
           {pokemon.name.replace(/-/g, " ")}

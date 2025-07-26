@@ -1,7 +1,7 @@
 export interface Pokemon {
   id: string;
   name: string;
-  sprite: string;
+  sprite?: string;
 }
 
 export interface Generation {
