@@ -53,6 +53,10 @@ async function fetchGenerations(dictionary: any): Promise<Generation[]> {
                   name: p.name,
                   sprite: pokemonData.sprites.front_default,
                 };
+            })
+            .catch(error => {
+                console.warn(`Could not fetch data for pokemon id ${id}`, error);
+                return null; // Return null if fetch fails for any reason
             });
         })
         .filter(Boolean);
@@ -135,7 +139,7 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
       return true;
     }
 
-    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827', filter, style: { padding: '1rem' } })
+    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827', filter })
       .then((dataUrl) => {
         const link = document.createElement('a')
         link.download = 'pokerater-summary.png'
