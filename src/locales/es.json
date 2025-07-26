@@ -1,0 +1,23 @@
+
+{
+  "title": "PokeRater",
+  "description": "Valora tus Pokémon favoritos de cada generación y mira cómo se comparan. ¡Comparte tu ranking definitivo con tus amigos!",
+  "generation": "Generación",
+  "scoreboard": {
+    "title": "Marcador de Generación",
+    "description": "Puntuación media de cada generación (sobre 6)",
+    "avg": "Prom"
+  },
+  "top10": {
+    "title": "Top 10 Pokémon",
+    "description": "Selecciona y clasifica tus Pokémon favoritos de tus valoraciones de 6 estrellas.",
+    "addTitle": "Añadir a tu Top 10",
+    "backButton": "Volver al Ranking",
+    "emptyState": "Valora algunos Pokémon con 6 estrellas para añadirlos a tus favoritos."
+  },
+  "share": {
+    "button": "Compartir tus Valoraciones",
+    "toastTitle": "¡Enlace Copiado!",
+    "toastDescription": "Tus valoraciones se han copiado al portapapeles."
+  }
+}

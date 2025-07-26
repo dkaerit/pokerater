@@ -36,17 +36,22 @@ const CustomDot = (props: any) => {
 };
 
 
-export function Scoreboard({ scores }: { scores: Score[] }) {
+export function Scoreboard({ scores, dictionary }: { scores: Score[], dictionary: any }) {
     const activeDot = useMemo(() => <CustomDot />, []);
+    const chartLabel = useMemo(() => {
+        const config = { ...chartConfig };
+        config.score.label = dictionary.scoreboard.avg;
+        return config;
+    }, [dictionary]);
 
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="font-headline">Generation Scoreboard</CardTitle>
-        <CardDescription>Average rating for each generation (out of 6)</CardDescription>
+        <CardTitle className="font-headline">{dictionary.scoreboard.title}</CardTitle>
+        <CardDescription>{dictionary.scoreboard.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+        <ChartContainer config={chartLabel} className="min-h-[200px] w-full">
            <ResponsiveContainer width="100%" height={250}>
             <AreaChart data={scores} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>

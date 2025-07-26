@@ -1,6 +1,8 @@
 import { PokeRater } from "@/components/poke-rater";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
+import { getDictionary } from "@/lib/get-dictionary";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 function LoadingSkeleton() {
   return (
@@ -19,11 +21,16 @@ function LoadingSkeleton() {
   );
 }
 
-export default function Home() {
+export default async function Home({ params: { lang } }: { params: { lang: string }}) {
+  const dictionary = await getDictionary(lang);
+
   return (
     <main className="container mx-auto py-8 px-4">
+      <div className="absolute top-4 left-4">
+        <LanguageSwitcher lang={lang} />
+      </div>
        <Suspense fallback={<LoadingSkeleton />}>
-        <PokeRater />
+        <PokeRater dictionary={dictionary} />
       </Suspense>
     </main>
   );

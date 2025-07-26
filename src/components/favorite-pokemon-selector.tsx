@@ -19,6 +19,7 @@ interface FavoritePokemonSelectorProps {
   ratings: Ratings;
   favorites: string[];
   onFavoritesChange: (favorites: string[]) => void;
+  dictionary: any;
 }
 
 export function FavoritePokemonSelector({
@@ -26,6 +27,7 @@ export function FavoritePokemonSelector({
   ratings,
   favorites,
   onFavoritesChange,
+  dictionary
 }: FavoritePokemonSelectorProps) {
   const [isListVisible, setIsListVisible] = useState(false);
 
@@ -73,15 +75,15 @@ export function FavoritePokemonSelector({
   return (
     <Card className="h-full flex flex-col">
       <CardHeader>
-        <CardTitle className="font-headline">Top 10 Pokémon</CardTitle>
+        <CardTitle className="font-headline">{dictionary.top10.title}</CardTitle>
         <CardDescription>
-          Select and rank your favorite Pokémon from your 6-star ratings.
+          {dictionary.top10.description}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-grow flex flex-col">
         {isListVisible ? (
           <div className="flex-grow flex flex-col">
-            <h4 className="font-semibold mb-2 text-sm">Add to your Top 10 ({favorites.length}/10)</h4>
+            <h4 className="font-semibold mb-2 text-sm">{dictionary.top10.addTitle} ({favorites.length}/10)</h4>
             <ScrollArea className="h-48 border rounded-md">
               <div className="p-2 grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {availableToSelect.map((pokemon) => (
@@ -105,7 +107,7 @@ export function FavoritePokemonSelector({
               </div>
             </ScrollArea>
             <Button onClick={() => setIsListVisible(false)} variant="secondary" className="mt-4">
-              Back to Ranking
+              {dictionary.top10.backButton}
             </Button>
           </div>
         ) : (
@@ -155,7 +157,7 @@ export function FavoritePokemonSelector({
             </ScrollArea>
              {favorites.length === 0 && sixStarPokemon.length === 0 && (
               <p className="text-center text-sm text-muted-foreground mt-4 p-4 bg-muted/50 rounded-md">
-                Rate some Pokémon with 6 stars to add them to your favorites.
+                {dictionary.top10.emptyState}
               </p>
             )}
           </div>

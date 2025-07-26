@@ -1,0 +1,23 @@
+
+{
+  "title": "PokeRater",
+  "description": "Rate your favorite Pokémon from each generation and see how they stack up. Share your definitive ranking with your friends!",
+  "generation": "Generation",
+  "scoreboard": {
+    "title": "Generation Scoreboard",
+    "description": "Average rating for each generation (out of 6)",
+    "avg": "Avg"
+  },
+  "top10": {
+    "title": "Top 10 Pokémon",
+    "description": "Select and rank your favorite Pokémon from your 6-star ratings.",
+    "addTitle": "Add to your Top 10",
+    "backButton": "Back to Ranking",
+    "emptyState": "Rate some Pokémon with 6 stars to add them to your favorites."
+  },
+  "share": {
+    "button": "Share Your Ratings",
+    "toastTitle": "Link Copied!",
+    "toastDescription": "Your ratings have been copied to the clipboard."
+  }
+}

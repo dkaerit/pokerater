@@ -16,6 +16,7 @@ interface GenerationAccordionProps {
   ratings: Ratings;
   onRatingChange: (pokemonId: string, rating: number) => void;
   defaultOpen?: boolean;
+  dictionary: any;
 }
 
 const GenerationAccordionComponent = ({
@@ -23,6 +24,7 @@ const GenerationAccordionComponent = ({
   ratings,
   onRatingChange,
   defaultOpen = false,
+  dictionary,
 }: GenerationAccordionProps) => {
   const generationRatings = useMemo(() => {
     const relevantRatings: Ratings = {};
@@ -55,7 +57,7 @@ const GenerationAccordionComponent = ({
             <span>{generation.name}</span>
             <div className="flex items-center gap-4">
                <div className="text-sm font-body font-normal text-muted-foreground hidden md:block">{ratedCount} / {generation.pokemon.length}</div>
-               <span className="text-base font-body font-bold text-primary">Avg: {averageScore.toFixed(2)}</span>
+               <span className="text-base font-body font-bold text-primary">{dictionary.scoreboard.avg}: {averageScore.toFixed(2)}</span>
             </div>
           </div>
         </AccordionTrigger>

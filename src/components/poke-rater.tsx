@@ -14,7 +14,7 @@ import { FavoritePokemonSelector } from "./favorite-pokemon-selector";
 
 const MAX_GENERATIONS = 9;
 
-async function fetchGenerations(): Promise<Generation[]> {
+async function fetchGenerations(dictionary: any): Promise<Generation[]> {
   const generationPromises = Array.from({ length: MAX_GENERATIONS }, (_, i) =>
     fetch(`https://pokeapi.co/api/v2/generation/${i + 1}`).then((res) =>
       res.json()
@@ -53,7 +53,7 @@ async function fetchGenerations(): Promise<Generation[]> {
 
       return {
         id: gen.id,
-        name: `Generation ${gen.id}`,
+        name: `${dictionary.generation} ${gen.id}`,
         pokemon: pokemon.sort((a: {id: string}, b: {id:string}) => parseInt(a.id) - parseInt(b.id)),
       };
     })
@@ -63,7 +63,7 @@ async function fetchGenerations(): Promise<Generation[]> {
 }
 
 
-function PokeRaterComponent() {
+function PokeRaterComponent({ dictionary }: { dictionary: any }) {
   const searchParams = useSearchParams();
   const ratingsParam = searchParams.get("ratings");
   const favoritesParam = searchParams.get("favorites");
@@ -86,7 +86,7 @@ function PokeRaterComponent() {
     async function loadData() {
       setIsLoading(true);
       try {
-        const data = await fetchGenerations();
+        const data = await fetchGenerations(dictionary);
         setGenerations(data);
       } catch (error) {
         console.error("Failed to fetch Pokemon data", error);
@@ -100,14 +100,14 @@ function PokeRaterComponent() {
       }
     }
     loadData();
-  }, [toast]);
+  }, [toast, dictionary]);
 
   const handleShare = () => {
     const link = generateShareableLink();
     navigator.clipboard.writeText(link);
     toast({
-      title: "Link Copied!",
-      description: "Your ratings have been copied to the clipboard.",
+      title: dictionary.share.toastTitle,
+      description: dictionary.share.toastDescription,
     });
   };
 
@@ -135,31 +135,31 @@ function PokeRaterComponent() {
     <div className="max-w-7xl mx-auto">
       <header className="text-center mb-8">
         <h1 className="text-4xl md:text-5xl font-bold font-headline text-primary tracking-tighter">
-          PokeRater
+          {dictionary.title}
         </h1>
         <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-          Rate your favorite Pokémon from each generation and see how they stack
-          up. Share your definitive ranking with your friends!
+          {dictionary.description}
         </p>
       </header>
 
       <div className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <Scoreboard scores={generationScores} />
+            <Scoreboard scores={generationScores} dictionary={dictionary} />
           </div>
           <FavoritePokemonSelector 
             allPokemon={allPokemon}
             ratings={ratings}
             favorites={favorites}
             onFavoritesChange={handleFavoritesChange}
+            dictionary={dictionary}
           />
         </div>
         
         <div className="flex justify-end">
           <Button onClick={handleShare}>
             <Share2 className="mr-2 h-4 w-4" />
-            Share Your Ratings
+            {dictionary.share.button}
           </Button>
         </div>
 
@@ -171,6 +171,7 @@ function PokeRaterComponent() {
               ratings={ratings}
               onRatingChange={handleRatingChange}
               defaultOpen={index === 0}
+              dictionary={dictionary}
             />
           ))}
         </div>
@@ -179,10 +180,10 @@ function PokeRaterComponent() {
   );
 }
 
-export function PokeRater() {
+export function PokeRater({ dictionary }: { dictionary: any }) {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <PokeRaterComponent />
+            <PokeRaterComponent dictionary={dictionary} />
         </Suspense>
     )
 }
