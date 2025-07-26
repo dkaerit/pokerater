@@ -135,7 +135,7 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
       return true;
     }
 
-    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827', filter })
+    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827', filter, style: { padding: '1rem' } })
       .then((dataUrl) => {
         const link = document.createElement('a')
         link.download = 'pokerater-summary.png'
@@ -189,7 +189,7 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
       </header>
 
       <div className="space-y-6">
-        <div ref={shareableAreaRef} className="p-4 bg-background">
+        <div ref={shareableAreaRef} className="bg-background">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <Scoreboard scores={generationScores} dictionary={dictionary} />
