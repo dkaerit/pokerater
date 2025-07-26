@@ -50,7 +50,7 @@ export function FavoritePokemonSelector({
   }, [sixStarPokemon, favorites]);
 
   const handleSelectPokemon = (pokemonId: string) => {
-    if (favorites.length < 10) {
+    if (favorites.length < 6) {
       onFavoritesChange([...favorites, pokemonId]);
     }
   };
@@ -97,15 +97,15 @@ export function FavoritePokemonSelector({
   return (
     <Card className="h-full flex flex-col">
       <CardHeader>
-        <CardTitle className="font-headline">{dictionary.top10.title}</CardTitle>
+        <CardTitle className="font-headline">{dictionary.top6.title}</CardTitle>
         <CardDescription>
-          {dictionary.top10.description}
+          {dictionary.top6.description}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-grow flex flex-col">
         {isListVisible ? (
           <div className="flex-grow flex flex-col">
-            <h4 className="font-semibold mb-2 text-sm">{dictionary.top10.addTitle} ({favorites.length}/10)</h4>
+            <h4 className="font-semibold mb-2 text-sm">{dictionary.top6.addTitle} ({favorites.length}/6)</h4>
             <ScrollArea className="h-48 border rounded-md">
               <div className="p-2 grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {availableToSelect.map((pokemon) => (
@@ -113,7 +113,7 @@ export function FavoritePokemonSelector({
                     key={pokemon.id}
                     onClick={() => handleSelectPokemon(pokemon.id)}
                     className="flex flex-col items-center p-1 rounded-md hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={favorites.length >= 10}
+                    disabled={favorites.length >= 6}
                     title={pokemon.name}
                   >
                     <Image
@@ -129,7 +129,7 @@ export function FavoritePokemonSelector({
               </div>
             </ScrollArea>
             <Button onClick={() => setIsListVisible(false)} variant="secondary" className="mt-4">
-              {dictionary.top10.backButton}
+              {dictionary.top6.backButton}
             </Button>
           </div>
         ) : (
@@ -169,7 +169,7 @@ export function FavoritePokemonSelector({
                   </li>
                   )
                 })}
-                {Array.from({ length: 10 - favorites.length }).map((_, index) => (
+                {Array.from({ length: 6 - favorites.length }).map((_, index) => (
                     <li key={`placeholder-${index}`} className="flex items-center bg-muted/50 p-2 rounded-md border-dashed border-2 h-[58px]">
                        <span className="text-lg font-bold text-muted-foreground w-8">{favorites.length + index + 1}.</span>
                        <Button 
@@ -187,7 +187,7 @@ export function FavoritePokemonSelector({
             </ScrollArea>
              {favorites.length === 0 && sixStarPokemon.length === 0 && (
               <p className="text-center text-sm text-muted-foreground mt-4 p-4 bg-muted/50 rounded-md">
-                {dictionary.top10.emptyState}
+                {dictionary.top6.emptyState}
               </p>
             )}
           </div>

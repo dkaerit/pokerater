@@ -8,10 +8,10 @@
     "description": "Puntuación media de cada generación (sobre 6)",
     "avg": "Promedio"
   },
-  "top10": {
-    "title": "Top 10 Pokémon",
+  "top6": {
+    "title": "Top 6 Pokémon",
     "description": "Selecciona y clasifica tus Pokémon favoritos de tus valoraciones de 6 estrellas.",
-    "addTitle": "Añadir a tu Top 10",
+    "addTitle": "Añadir a tu Top 6",
     "backButton": "Volver al Ranking",
     "emptyState": "Valora algunos Pokémon con 6 estrellas para añadirlos a tus favoritos."
   },

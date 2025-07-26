@@ -8,10 +8,10 @@
     "description": "Average rating for each generation (out of 6)",
     "avg": "Average"
   },
-  "top10": {
-    "title": "Top 10 Pokémon",
+  "top6": {
+    "title": "Top 6 Pokémon",
     "description": "Select and rank your favorite Pokémon from your 6-star ratings.",
-    "addTitle": "Add to your Top 10",
+    "addTitle": "Add to your Top 6",
     "backButton": "Back to Ranking",
     "emptyState": "Rate some Pokémon with 6 stars to add them to your favorites."
   },
