@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useMemo } from "react";
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { GripVertical, Plus, Trash2 } from "lucide-react";
+import { GripVertical, Plus, Trash2, Image as ImageIcon } from "lucide-react";
 import { Pokemon, Ratings } from "@/lib/types";
 import "./favorite-pokemon-selector.css";
 
@@ -116,14 +117,20 @@ export function FavoritePokemonSelector({
                     disabled={favorites.length >= 6}
                     title={pokemon.name}
                   >
-                    <Image
-                      src={pokemon.sprite}
-                      alt={pokemon.name}
-                      width={64}
-                      height={64}
-                      className="object-contain"
-                      unoptimized
-                    />
+                    {pokemon.sprite ? (
+                        <Image
+                          src={pokemon.sprite}
+                          alt={pokemon.name}
+                          width={64}
+                          height={64}
+                          className="object-contain"
+                          unoptimized
+                        />
+                      ) : (
+                        <div className="w-16 h-16 flex items-center justify-center bg-muted rounded-md">
+                          <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                        </div>
+                      )}
                   </button>
                 ))}
               </div>
@@ -153,14 +160,20 @@ export function FavoritePokemonSelector({
                     onDragLeave={handleDragLeave}
                   >
                     <span className="text-lg font-bold text-primary w-8">{index + 1}.</span>
-                    <Image
-                      src={pokemon.sprite}
-                      alt={pokemon.name}
-                      width={40}
-                      height={40}
-                      className="object-contain mx-2"
-                      unoptimized
-                    />
+                     {pokemon.sprite ? (
+                        <Image
+                            src={pokemon.sprite}
+                            alt={pokemon.name}
+                            width={40}
+                            height={40}
+                            className="object-contain mx-2"
+                            unoptimized
+                        />
+                     ) : (
+                        <div className="w-10 h-10 flex items-center justify-center bg-muted rounded-md mx-2">
+                            <ImageIcon className="w-5 h-5 text-muted-foreground" />
+                        </div>
+                     )}
                     <span className="flex-grow capitalize text-sm">{pokemon.name}</span>
                     <button onClick={() => handleRemovePokemon(pokemon.id)} className="p-1 text-muted-foreground hover:text-destructive">
                        <Trash2 className="w-4 h-4" />
@@ -196,3 +209,4 @@ export function FavoritePokemonSelector({
     </Card>
   );
 }
+
