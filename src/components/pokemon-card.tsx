@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import type { Pokemon } from "@/lib/types";
 import { memo } from "react";
+import './pokemon-card.css';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -15,10 +14,19 @@ interface PokemonCardProps {
 
 const RATING_VALUES = [0, 1, 2, 3, 4, 5, 6];
 
+const getRatingColor = (rating: number | undefined) => {
+  if (rating === undefined) return 'transparent';
+  if (rating < 2) return '#e5475c'; // Red
+  if (rating < 4) return '#c4920e'; // Amber
+  return '#1495a2'; // Turquoise
+};
+
 const PokemonCardComponent = ({ pokemon, rating, onRatingChange }: PokemonCardProps) => {
-  const handleValueChange = (value: string) => {
-    onRatingChange(pokemon.id, parseInt(value, 10));
+  const handleRatingClick = (value: number) => {
+    onRatingChange(pokemon.id, value);
   };
+
+  const selectedColor = getRatingColor(rating);
 
   return (
     <Card className="flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:border-primary">
@@ -39,20 +47,22 @@ const PokemonCardComponent = ({ pokemon, rating, onRatingChange }: PokemonCardPr
           {pokemon.name.replace(/-/g, " ")}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-4 pt-0 w-full">
-        <RadioGroup
-          value={rating?.toString()}
-          onValueChange={handleValueChange}
-          className="flex justify-center items-center space-x-1"
-          aria-label={`Rating for ${pokemon.name}`}
-        >
+      <CardContent className="p-4 pt-0 w-full flex justify-center">
+        <div className="rating-bar" role="radiogroup" aria-label={`Rating for ${pokemon.name}`}>
           {RATING_VALUES.map((value) => (
-            <div key={value} className="flex flex-col items-center space-y-1">
-              <Label htmlFor={`${pokemon.id}-${value}`} className="text-xs">{value}</Label>
-              <RadioGroupItem value={value.toString()} id={`${pokemon.id}-${value}`} />
-            </div>
+            <button
+              key={value}
+              type="button"
+              role="radio"
+              aria-checked={rating === value}
+              onClick={() => handleRatingClick(value)}
+              className="rating-button"
+              style={rating === value ? { backgroundColor: selectedColor, color: '#fff' } : {}}
+            >
+              {value}
+            </button>
           ))}
-        </RadioGroup>
+        </div>
       </CardContent>
     </Card>
   );

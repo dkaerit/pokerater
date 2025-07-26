@@ -1,0 +1,28 @@
+.rating-bar {
+  display: flex;
+  background-color: hsl(220, 13%, 18%);
+  border-radius: 9999px;
+  overflow: hidden;
+  padding: 4px;
+  width: 100%;
+  max-width: 240px; 
+}
+
+.rating-button {
+  flex: 1;
+  padding: 6px 0;
+  border: none;
+  background-color: transparent;
+  color: hsl(210, 20%, 95%);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  border-radius: 9999px;
+  outline: none;
+}
+
+.rating-button:focus-visible {
+  box-shadow: 0 0 0 2px hsl(var(--ring));
+}
