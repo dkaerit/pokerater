@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Scoreboard } from "@/components/scoreboard";
@@ -66,10 +65,7 @@ async function fetchPokemonDetailsForGeneration(pokemonList: Pokemon[]): Promise
 }
 
 
-export function PokeRaterComponent({ dictionary }: { dictionary: any }) {
-  const searchParams = useSearchParams();
-  const ratingsParam = searchParams.get("ratings");
-  const favoritesParam = searchParams.get("favorites");
+export function PokeRaterComponent({ dictionary, ratingsParam, favoritesParam }: { dictionary: any, ratingsParam: string | null, favoritesParam: string | null }) {
   const { toast } = useToast();
 
   const [generations, setGenerations] = useState<Generation[]>([]);

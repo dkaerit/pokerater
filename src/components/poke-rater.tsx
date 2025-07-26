@@ -1,14 +1,19 @@
 
 "use client";
 
-import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { PokeRaterComponent } from "./poke-rater-component";
 
-
 export function PokeRater({ dictionary }: { dictionary: any }) {
+    const searchParams = useSearchParams();
+    const ratingsParam = searchParams.get("ratings");
+    const favoritesParam = searchParams.get("favorites");
+
     return (
-        <Suspense>
-            <PokeRaterComponent dictionary={dictionary} />
-        </Suspense>
+        <PokeRaterComponent 
+            dictionary={dictionary} 
+            ratingsParam={ratingsParam}
+            favoritesParam={favoritesParam}
+        />
     )
 }
