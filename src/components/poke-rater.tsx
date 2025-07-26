@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Scoreboard } from "@/components/scoreboard";
 import { GenerationAccordion } from "@/components/generation-accordion";
 import { usePokemonRatings } from "@/hooks/use-pokemon-ratings";
-import type { Generation } from "@/lib/types";
+import type { Generation, Pokemon } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Share2 } from "lucide-react";
 import { FavoritePokemonSelector } from "./favorite-pokemon-selector";
@@ -23,24 +23,47 @@ async function fetchGenerations(): Promise<Generation[]> {
 
   const generationResults = await Promise.all(generationPromises);
 
-  return generationResults.map((gen) => ({
-    id: gen.id,
-    name: gen.name.replace('generation-','Generation '),
-    pokemon: gen.pokemon_species
-      .map((p: { name: string; url: string }) => {
-        const urlParts = p.url.split("/");
-        const id = urlParts[urlParts.length - 2];
-        if (parseInt(id) > 1025) return null; // Filter out pokemon beyond Paldea region
-        return {
-          id,
-          name: p.name,
-          sprite: `https://raw.githubusercontent.com/master-boilerplate/master-boilerplate/main/src/assets/pokemons/${id}.gif`,
-        };
-      })
-      .filter(Boolean)
-      .sort((a: {id: string}, b: {id: string}) => parseInt(a.id) - parseInt(b.id)),
-  }));
+  const generationsWithPokemon = await Promise.all(
+    generationResults.map(async (gen) => {
+      const pokemonPromises = gen.pokemon_species
+        .map((p: { name: string; url: string }) => {
+          const urlParts = p.url.split("/");
+          const id = urlParts[urlParts.length - 2];
+          if (parseInt(id) > 1025) return null; // Filter out pokemon beyond Paldea region
+          
+          // Fetch individual pokemon data for the sprite
+          return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+            .then(res => {
+                if (!res.ok) {
+                    // This pokemon might not have a valid entry, skip it.
+                    return null;
+                }
+                return res.json();
+            })
+            .then(pokemonData => {
+                if (!pokemonData) return null;
+                return {
+                  id,
+                  name: p.name,
+                  sprite: pokemonData.sprites.front_default || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+                };
+            });
+        })
+        .filter(Boolean);
+
+      const pokemon = (await Promise.all(pokemonPromises)).filter((p): p is Pokemon => p !== null);
+
+      return {
+        id: gen.id,
+        name: gen.name.replace('generation-','Generation '),
+        pokemon: pokemon.sort((a: {id: string}, b: {id: string}) => parseInt(a.id) - parseInt(b.id)),
+      };
+    })
+  );
+
+  return generationsWithPokemon;
 }
+
 
 function PokeRaterComponent() {
   const searchParams = useSearchParams();
