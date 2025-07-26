@@ -3,8 +3,8 @@ import type {NextConfig} from 'next';
 const nextConfig: NextConfig = {
   /* config options here */
   output: 'export',
-  basePath: '/pokerater', // Establecido directamente para gh-pages
-  assetPrefix: '/pokerater/', // Establecido directamente para gh-pages
+  // basePath: '/pokerater', // Ya no es necesario con la nueva configuración del middleware
+  // assetPrefix: '/pokerater/', // Ya no es necesario con la nueva configuración del middleware
   typescript: {
     ignoreBuildErrors: true,
   },

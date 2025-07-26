@@ -24,12 +24,21 @@ function getLocale(request: NextRequest): string | undefined {
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
+  
+  // Redirección de la raíz al idioma por defecto (ej: de /pokerater/ a /pokerater/es)
+  if (pathname.endsWith('/pokerater') || pathname.endsWith('/pokerater/')) {
+    const locale = getLocale(request) ?? i18n.defaultLocale;
+    const newUrl = new URL(`/${locale}`, request.url.replace('/pokerater/', '/pokerater'))
+    return NextResponse.redirect(newUrl)
+  }
+
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   )
 
   if (pathnameIsMissingLocale) {
     const locale = getLocale(request)
+    // Aseguramos que la URL base se mantenga intacta
     return NextResponse.redirect(
       new URL(`/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`, request.url)
     )
