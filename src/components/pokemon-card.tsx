@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -62,6 +63,7 @@ const PokemonCardComponent = ({ pokemon, rating, onRatingChange }: PokemonCardPr
               aria-checked={rating === value}
               onClick={() => handleRatingClick(value)}
               className="rating-button"
+              data-rating-value={value}
               style={rating === value ? { backgroundColor: selectedColor, color: '#fff' } : {}}
             >
               {value}

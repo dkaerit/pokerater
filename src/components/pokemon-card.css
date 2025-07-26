@@ -1,3 +1,4 @@
+
 .rating-bar {
   display: flex;
   background-color: hsl(220, 13%, 18%);
@@ -36,4 +37,24 @@
 .rating-button:focus-visible {
   box-shadow: 0 0 0 2px hsl(var(--ring));
   z-index: 10;
+}
+
+.rating-button:not([style*="background-color"]):hover {
+  color: #fff;
+}
+
+.rating-button[data-rating-value="0"]:hover,
+.rating-button[data-rating-value="1"]:hover {
+  background-color: rgba(255, 104, 102, 0.4);
+}
+
+.rating-button[data-rating-value="2"]:hover,
+.rating-button[data-rating-value="3"]:hover {
+  background-color: rgba(221, 186, 92, 0.4);
+}
+
+.rating-button[data-rating-value="4"]:hover,
+.rating-button[data-rating-value="5"]:hover,
+.rating-button[data-rating-value="6"]:hover {
+  background-color: rgba(61, 196, 209, 0.4);
 }
