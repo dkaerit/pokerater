@@ -16,9 +16,13 @@
     "emptyState": "Rate some Pokémon with 6 stars to add them to your favorites."
   },
   "share": {
-    "button": "Share Your Ratings",
+    "button": "Share",
+    "copyLink": "Copy Link",
+    "downloadImage": "Download as Image",
     "toastTitle": "Link Copied!",
-    "toastDescription": "Your ratings have been copied to the clipboard."
+    "toastDescription": "Your ratings have been copied to the clipboard.",
+    "imageToastTitle": "Image Downloading",
+    "imageToastDescription": "Your summary image is being generated."
   },
   "globalStats": {
     "button": "Global Stats",

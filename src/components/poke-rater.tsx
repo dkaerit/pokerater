@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,8 +9,16 @@ import { GenerationAccordion } from "@/components/generation-accordion";
 import { usePokemonRatings } from "@/hooks/use-pokemon-ratings";
 import type { Generation, Pokemon } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
-import { Share2 } from "lucide-react";
+import { Share2, Link as LinkIcon, ImageDown } from "lucide-react";
 import { FavoritePokemonSelector } from "./favorite-pokemon-selector";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import * as htmlToImage from 'html-to-image';
+
 
 const MAX_GENERATIONS = 9;
 
@@ -72,6 +80,9 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
   const [generations, setGenerations] = useState<Generation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const shareableAreaRef = useRef<HTMLDivElement>(null);
+
+
   const {
     ratings,
     favorites,
@@ -102,7 +113,7 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
     loadData();
   }, [toast, dictionary]);
 
-  const handleShare = () => {
+  const handleShareLink = () => {
     const link = generateShareableLink();
     navigator.clipboard.writeText(link);
     toast({
@@ -110,6 +121,33 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
       description: dictionary.share.toastDescription,
     });
   };
+
+  const handleShareImage = useCallback(() => {
+    if (shareableAreaRef.current === null) {
+      return
+    }
+
+    htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827' })
+      .then((dataUrl) => {
+        const link = document.createElement('a')
+        link.download = 'pokerater-summary.png'
+        link.href = dataUrl
+        link.click()
+         toast({
+          title: dictionary.share.imageToastTitle,
+          description: dictionary.share.imageToastDescription,
+        });
+      })
+      .catch((err) => {
+        console.log(err)
+         toast({
+          title: "Error",
+          description: "Could not generate image. Please try again.",
+          variant: "destructive",
+        });
+      })
+  }, [shareableAreaRef, toast, dictionary])
+
 
   if (isLoading) {
     return (
@@ -143,24 +181,40 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
       </header>
 
       <div className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <Scoreboard scores={generationScores} dictionary={dictionary} />
+        <div ref={shareableAreaRef} className="p-4 bg-background">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <Scoreboard scores={generationScores} dictionary={dictionary} />
+            </div>
+            <FavoritePokemonSelector 
+              allPokemon={allPokemon}
+              ratings={ratings}
+              favorites={favorites}
+              onFavoritesChange={handleFavoritesChange}
+              dictionary={dictionary}
+            />
           </div>
-          <FavoritePokemonSelector 
-            allPokemon={allPokemon}
-            ratings={ratings}
-            favorites={favorites}
-            onFavoritesChange={handleFavoritesChange}
-            dictionary={dictionary}
-          />
         </div>
         
         <div className="flex justify-end">
-          <Button onClick={handleShare}>
-            <Share2 className="mr-2 h-4 w-4" />
-            {dictionary.share.button}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>
+                <Share2 className="mr-2 h-4 w-4" />
+                {dictionary.share.button}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={handleShareLink}>
+                 <LinkIcon className="mr-2 h-4 w-4" />
+                <span>{dictionary.share.copyLink}</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleShareImage}>
+                <ImageDown className="mr-2 h-4 w-4" />
+                <span>{dictionary.share.downloadImage}</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="space-y-4">

@@ -16,9 +16,13 @@
     "emptyState": "Valora algunos Pokémon con 6 estrellas para añadirlos a tus favoritos."
   },
   "share": {
-    "button": "Compartir tus Valoraciones",
+    "button": "Compartir",
+    "copyLink": "Copiar Enlace",
+    "downloadImage": "Descargar como Imagen",
     "toastTitle": "¡Enlace Copiado!",
-    "toastDescription": "Tus valoraciones se han copiado al portapapeles."
+    "toastDescription": "Tus valoraciones se han copiado al portapapeles.",
+    "imageToastTitle": "Descargando Imagen",
+    "imageToastDescription": "Se está generando la imagen con tu resumen."
   },
   "globalStats": {
     "button": "Estadísticas Globales",
