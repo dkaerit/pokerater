@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GripVertical, Plus, Trash2 } from "lucide-react";
 import { Pokemon, Ratings } from "@/lib/types";
+import "./favorite-pokemon-selector.css";
 
 interface FavoritePokemonSelectorProps {
   allPokemon: Pokemon[];
@@ -30,6 +31,8 @@ export function FavoritePokemonSelector({
   dictionary
 }: FavoritePokemonSelectorProps) {
   const [isListVisible, setIsListVisible] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dropIndex, setDropIndex] = useState<number | null>(null);
 
   const sixStarPokemon = useMemo(() => {
     return allPokemon.filter((p) => ratings[p.id] === 6);
@@ -58,14 +61,33 @@ export function FavoritePokemonSelector({
 
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>, index: number) => {
     e.dataTransfer.setData("draggedIndex", index.toString());
+    setDraggedIndex(index);
+  };
+  
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setDropIndex(null);
   };
 
+  const handleDragEnter = (e: React.DragEvent<HTMLLIElement>, index: number) => {
+    e.preventDefault();
+    if (draggedIndex !== null && draggedIndex !== index) {
+      setDropIndex(index);
+    }
+  };
+  
+  const handleDragLeave = (e: React.DragEvent<HTMLLIElement>) => {
+      e.preventDefault();
+      setDropIndex(null);
+  }
+
   const handleDrop = (e: React.DragEvent<HTMLLIElement>, dropIndex: number) => {
-    const draggedIndex = parseInt(e.dataTransfer.getData("draggedIndex"), 10);
+    const draggedItemIndex = parseInt(e.dataTransfer.getData("draggedIndex"), 10);
     const newFavorites = [...favorites];
-    const [draggedItem] = newFavorites.splice(draggedIndex, 1);
+    const [draggedItem] = newFavorites.splice(draggedItemIndex, 1);
     newFavorites.splice(dropIndex, 0, draggedItem);
     onFavoritesChange(newFavorites);
+    handleDragEnd();
   };
   
   const handleDragOver = (e: React.DragEvent<HTMLLIElement>) => {
@@ -114,14 +136,21 @@ export function FavoritePokemonSelector({
           <div className="flex-grow flex flex-col">
             <ScrollArea className="flex-grow">
                <ol className="space-y-2">
-                {favoritePokemonDetails.map((pokemon, index) => (
+                {favoritePokemonDetails.map((pokemon, index) => {
+                  const isBeingDragged = draggedIndex === index;
+                  const isDropTarget = dropIndex === index;
+                  
+                  return (
                   <li
                     key={pokemon.id}
-                    className="flex items-center bg-card p-2 rounded-md shadow-sm border"
+                    className={`favorite-item ${isBeingDragged ? 'dragging' : ''} ${isDropTarget ? 'drop-target' : ''}`}
                     draggable
                     onDragStart={(e) => handleDragStart(e, index)}
+                    onDragEnd={handleDragEnd}
                     onDrop={(e) => handleDrop(e, index)}
                     onDragOver={handleDragOver}
+                    onDragEnter={(e) => handleDragEnter(e, index)}
+                    onDragLeave={handleDragLeave}
                   >
                     <span className="text-lg font-bold text-primary w-8">{index + 1}.</span>
                     <Image
@@ -138,7 +167,8 @@ export function FavoritePokemonSelector({
                     </button>
                     <GripVertical className="w-5 h-5 text-muted-foreground cursor-grab ml-1" />
                   </li>
-                ))}
+                  )
+                })}
                 {Array.from({ length: 10 - favorites.length }).map((_, index) => (
                     <li key={`placeholder-${index}`} className="flex items-center bg-muted/50 p-2 rounded-md border-dashed border-2 h-[58px]">
                        <span className="text-lg font-bold text-muted-foreground w-8">{favorites.length + index + 1}.</span>

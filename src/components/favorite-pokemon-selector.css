@@ -1,0 +1,48 @@
+@keyframes wobble {
+  0%, 100% {
+    transform: translateX(0%);
+    transform-origin: 50% 50%;
+  }
+  15% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  30% {
+    transform: translateX(1px) rotate(1deg);
+  }
+  45% {
+    transform: translateX(-1px) rotate(-1deg);
+  }
+  60% {
+    transform: translateX(1px) rotate(1deg);
+  }
+  75% {
+    transform: translateX(-1px) rotate(0deg);
+  }
+}
+
+.favorite-item {
+    display: flex;
+    align-items: center;
+    background-color: hsl(var(--card));
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid hsl(var(--border));
+    cursor: grab;
+    transition: background-color 0.2s, box-shadow 0.2s, opacity 0.2s, border-color 0.2s;
+}
+
+.favorite-item:hover {
+    animation: wobble 0.8s ease-in-out;
+}
+
+.favorite-item.dragging {
+    opacity: 0.5;
+    background-color: hsl(var(--accent));
+    cursor: grabbing;
+}
+
+.favorite-item.drop-target {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsl(var(--primary));
+}
