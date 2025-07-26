@@ -128,7 +128,11 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
     }
     
     const filter = (node: HTMLElement) => {
-        return (node.tagName !== 'LINK' || (node as HTMLLinkElement).rel !== 'stylesheet' || !(node as HTMLLinkElement).href.includes('fonts.googleapis.com'));
+      // we need to filter out the google fonts stylesheet
+      if (node.tagName === 'LINK' && (node as HTMLLinkElement).rel === 'stylesheet' && (node as HTMLLinkElement).href.includes('fonts.googleapis.com')) {
+          return false;
+      }
+      return true;
     }
 
     htmlToImage.toPng(shareableAreaRef.current, { cacheBust: true, backgroundColor: '#111827', filter })
@@ -222,13 +226,12 @@ function PokeRaterComponent({ dictionary }: { dictionary: any }) {
         </div>
 
         <div className="space-y-4">
-          {generations.map((gen, index) => (
+          {generations.map((gen) => (
             <GenerationAccordion
               key={gen.id}
               generation={gen}
               ratings={ratings}
               onRatingChange={handleRatingChange}
-              defaultOpen={index === 0}
               dictionary={dictionary}
             />
           ))}
