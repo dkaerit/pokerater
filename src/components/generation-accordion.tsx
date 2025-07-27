@@ -42,26 +42,25 @@ const GenerationAccordionComponent = ({
   
   const isDataLoaded = useMemo(() => generation.pokemon.every(p => p.sprite !== undefined), [generation.pokemon]);
   
-  const handleTriggerClick = async () => {
-    const currentlyOpen = !isOpen;
-    setIsOpen(currentlyOpen);
-
-    if (currentlyOpen && !isDataLoaded && !isLoading) {
-      fetchData();
-    }
-  };
-
   const fetchData = async () => {
-    setIsLoading(true);
-    setError(false);
-    try {
-      await onFetchGeneration(generation.id);
-    } catch (e) {
-      setError(true);
-    } finally {
-      setIsLoading(false);
+    if (!isDataLoaded && !isLoading) {
+        setIsLoading(true);
+        setError(false);
+        try {
+          await onFetchGeneration(generation.id);
+        } catch (e) {
+          setError(true);
+        } finally {
+          setIsLoading(false);
+        }
     }
   };
+  
+  useEffect(() => {
+    if (isOpen) {
+        fetchData();
+    }
+  }, [isOpen]);
 
 
   const generationRatings = useMemo(() => {
@@ -88,7 +87,7 @@ const GenerationAccordionComponent = ({
   const scoreColorClass = getScoreColorClass(averageScore);
 
   return (
-    <Accordion type="single" collapsible onValueChange={(value) => handleTriggerClick()} value={isOpen ? `item-${generation.id}` : ''}>
+    <Accordion type="single" collapsible onValueChange={(value) => setIsOpen(!!value)} value={isOpen ? `item-${generation.id}` : ''}>
       <AccordionItem value={`item-${generation.id}`} className="border-b-0">
         <AccordionTrigger className="text-lg font-headline font-semibold hover:no-underline rounded-lg bg-card p-4">
           <div className="flex justify-between w-full items-center pr-4">
@@ -105,7 +104,7 @@ const GenerationAccordionComponent = ({
               {Array.from({ length: 12 }).map((_, i) => <Skeleton key={i} className="h-48 w-full" />)}
              </div>
           )}
-          {error && (
+          {error && !isLoading && (
             <div className="text-center py-6 bg-muted rounded-lg">
                <AlertCircle className="mx-auto h-8 w-8 text-destructive" />
                <p className="mt-2 text-sm text-muted-foreground">{dictionary.errors?.generationLoad || 'Failed to load Pokémon.'}</p>

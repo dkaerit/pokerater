@@ -34,6 +34,15 @@
     "topGenerationsTitle": "Generaciones Más Populares",
     "topGenerationsDescription": "Clasificadas por la puntuación media de los usuarios.",
     "pokemon": "Pokémon",
-    "votes": "Votos"
+    "votes": "Votos",
+    "noStatsTitle": "Aún No Hay Estadísticas Globales Disponibles",
+    "noStatsDescription": "¡Vuelve más tarde cuando hayamos recopilado algunos datos!"
+  },
+  "errors": {
+    "initialLoad": "No se pudieron cargar los datos de generación. Por favor, recarga la página.",
+    "initialLoadToast": "No se pudieron obtener los datos de generación. Por favor, inténtalo de nuevo más tarde.",
+    "generationLoad": "Fallo al cargar los Pokémon de esta generación.",
+    "retry": "Reintentar",
+    "ohNo": "¡Oh, no!"
   }
 }

@@ -34,6 +34,15 @@
     "topGenerationsTitle": "Most Popular Generations",
     "topGenerationsDescription": "Ranked by average user score.",
     "pokemon": "Pokémon",
-    "votes": "Votes"
+    "votes": "Votes",
+    "noStatsTitle": "No Global Statistics Available Yet",
+    "noStatsDescription": "Check back later once we've collected some data!"
+  },
+  "errors": {
+    "initialLoad": "Could not load generation data. Please refresh the page.",
+    "initialLoadToast": "Could not fetch generation data. Please try again later.",
+    "generationLoad": "Failed to load Pokémon for this generation.",
+    "retry": "Retry",
+    "ohNo": "Oh no!"
   }
 }

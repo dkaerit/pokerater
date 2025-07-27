@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
-import { Trophy, Crown, Medal } from "lucide-react";
+import { Trophy, Crown, Medal, BarChartHorizontal } from "lucide-react";
 
 interface GlobalStatsProps {
   dictionary: any;
@@ -17,6 +17,15 @@ const getRankIcon = (rank: number) => {
         default: return <span className="font-bold text-lg w-5 text-center">{rank + 1}</span>
     }
 }
+
+const NoDataComponent = ({ dictionary }: { dictionary: any }) => (
+    <div className="flex flex-col items-center justify-center h-48 text-center bg-muted/50 rounded-lg">
+        <BarChartHorizontal className="w-10 h-10 text-muted-foreground mb-4" />
+        <p className="text-muted-foreground font-medium">{dictionary.globalStats.noStatsTitle}</p>
+        <p className="text-sm text-muted-foreground">{dictionary.globalStats.noStatsDescription}</p>
+    </div>
+);
+
 
 export function GlobalStats({ dictionary, topPokemon, topGenerations }: GlobalStatsProps) {
   return (
@@ -37,27 +46,31 @@ export function GlobalStats({ dictionary, topPokemon, topGenerations }: GlobalSt
             <CardDescription>{dictionary.globalStats.top10Description}</CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">#</TableHead>
-                  <TableHead>{dictionary.globalStats.pokemon}</TableHead>
-                  <TableHead className="text-right">{dictionary.globalStats.votes}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {topPokemon.map((pokemon, index) => (
-                  <TableRow key={pokemon.id}>
-                    <TableCell className="font-medium">{getRankIcon(index)}</TableCell>
-                    <TableCell className="flex items-center gap-2">
-                        <Image src={pokemon.sprite} alt={pokemon.name} width={40} height={40} unoptimized />
-                        <span className="capitalize">{pokemon.name}</span>
-                    </TableCell>
-                    <TableCell className="text-right font-mono">{pokemon.votes.toLocaleString()}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+             {topPokemon.length > 0 ? (
+                <Table>
+                <TableHeader>
+                    <TableRow>
+                    <TableHead className="w-12">#</TableHead>
+                    <TableHead>{dictionary.globalStats.pokemon}</TableHead>
+                    <TableHead className="text-right">{dictionary.globalStats.votes}</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {topPokemon.map((pokemon, index) => (
+                    <TableRow key={pokemon.id}>
+                        <TableCell className="font-medium">{getRankIcon(index)}</TableCell>
+                        <TableCell className="flex items-center gap-2">
+                            <Image src={pokemon.sprite} alt={pokemon.name} width={40} height={40} unoptimized />
+                            <span className="capitalize">{pokemon.name}</span>
+                        </TableCell>
+                        <TableCell className="text-right font-mono">{pokemon.votes.toLocaleString()}</TableCell>
+                    </TableRow>
+                    ))}
+                </TableBody>
+                </Table>
+             ) : (
+                <NoDataComponent dictionary={dictionary} />
+             )}
           </CardContent>
         </Card>
         <Card>
@@ -66,24 +79,28 @@ export function GlobalStats({ dictionary, topPokemon, topGenerations }: GlobalSt
             <CardDescription>{dictionary.globalStats.topGenerationsDescription}</CardDescription>
           </CardHeader>
           <CardContent>
-             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">#</TableHead>
-                  <TableHead>{dictionary.generation}</TableHead>
-                  <TableHead className="text-right">{dictionary.scoreboard.avg}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {topGenerations.map((gen, index) => (
-                  <TableRow key={gen.id}>
-                    <TableCell className="font-medium">{getRankIcon(index)}</TableCell>
-                    <TableCell>{gen.name}</TableCell>
-                    <TableCell className="text-right font-mono">{gen.avg_score.toFixed(2)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+             {topGenerations.length > 0 ? (
+                <Table>
+                <TableHeader>
+                    <TableRow>
+                    <TableHead className="w-12">#</TableHead>
+                    <TableHead>{dictionary.generation}</TableHead>
+                    <TableHead className="text-right">{dictionary.scoreboard.avg}</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {topGenerations.map((gen, index) => (
+                    <TableRow key={gen.id}>
+                        <TableCell className="font-medium">{getRankIcon(index)}</TableCell>
+                        <TableCell>{gen.name}</TableCell>
+                        <TableCell className="text-right font-mono">{gen.avg_score.toFixed(2)}</TableCell>
+                    </TableRow>
+                    ))}
+                </TableBody>
+                </Table>
+             ) : (
+                <NoDataComponent dictionary={dictionary} />
+             )}
           </CardContent>
         </Card>
       </div>

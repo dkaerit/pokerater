@@ -12,9 +12,10 @@ import {
 export function LanguageSwitcher({ lang }: { lang: string }) {
   const router = useRouter()
   const pathname = usePathname()
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
   const handleLanguageChange = (newLocale: string) => {
-    const newPath = pathname.replace(`/${lang}`, `/${newLocale}`)
+    const newPath = pathname.replace(`${basePath}/${lang}`, `${basePath}/${newLocale}`)
     router.push(newPath)
   }
 
