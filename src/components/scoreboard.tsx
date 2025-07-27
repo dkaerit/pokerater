@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import {
   ChartContainer,
+  ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import type { Score } from "@/lib/types";
@@ -51,9 +53,17 @@ export function Scoreboard({ scores, dictionary }: { scores: Score[], dictionary
         <CardDescription>{dictionary.scoreboard.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartLabel} className="min-h-[200px] w-full">
-           <ResponsiveContainer width="100%" height={250}>
-            <AreaChart data={scores} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <ChartContainer config={chartLabel} className="h-[250px] w-full">
+            <AreaChart
+              accessibilityLayer
+              data={scores}
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+            >
               <defs>
                 <linearGradient id="splitColorStroke" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0.33" stopColor="rgb(61,196,209)" /> 
@@ -71,7 +81,7 @@ export function Scoreboard({ scores, dictionary }: { scores: Score[], dictionary
                 axisLine={false}
               />
               <YAxis domain={[0, 6]} tickLine={false} axisLine={false} tickMargin={10} ticks={[0,2,4,6]} />
-              <Tooltip
+              <ChartTooltip
                 cursor={{ stroke: 'hsl(var(--primary))', strokeWidth: 1, strokeDasharray: '3 3' }}
                 content={<ChartTooltipContent indicator="dot" />}
               />
@@ -84,8 +94,7 @@ export function Scoreboard({ scores, dictionary }: { scores: Score[], dictionary
                 activeDot={activeDot}
               />
             </AreaChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+          </ChartContainer>
       </CardContent>
     </Card>
   );
