@@ -47,55 +47,58 @@ export function Scoreboard({ scores, dictionary }: { scores: Score[], dictionary
     }, [dictionary]);
 
   return (
-    <Card className="h-full">
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle className="font-headline">{dictionary.scoreboard.title}</CardTitle>
         <CardDescription>{dictionary.scoreboard.description}</CardDescription>
       </CardHeader>
-      <CardContent>
-          <ChartContainer config={chartLabel} className="h-[250px] w-full">
-            <AreaChart
-              accessibilityLayer
-              data={scores}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <defs>
-                <linearGradient id="splitColorStroke" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0.33" stopColor="rgb(61,196,209)" /> 
-                  <stop offset="0.33" stopColor="rgb(221,186,92)" />
-                  <stop offset="0.66" stopColor="rgb(221,186,92)" />
-                  <stop offset="0.66" stopColor="rgb(255,104,102)" />
-                  <stop offset="1" stopColor="rgb(255,104,102)" />
-                </linearGradient>
-              </defs>
-              <CartesianGrid vertical={false} strokeDasharray="3 3" />
-              <XAxis
-                dataKey="generation"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-              />
-              <YAxis domain={[0, 6]} tickLine={false} axisLine={false} tickMargin={10} ticks={[0,2,4,6]} />
-              <ChartTooltip
-                cursor={{ stroke: 'hsl(var(--primary))', strokeWidth: 1, strokeDasharray: '3 3' }}
-                content={<ChartTooltipContent indicator="dot" />}
-              />
-              <Area 
-                type="monotone" 
-                dataKey="score" 
-                stroke="url(#splitColorStroke)"
-                fill="transparent"
-                strokeWidth={3}
-                activeDot={activeDot}
-              />
-            </AreaChart>
+      <CardContent className="flex-grow flex flex-col">
+          <ChartContainer config={chartLabel} className="min-h-[250px] w-full flex-grow">
+            <ResponsiveContainer>
+                <AreaChart
+                accessibilityLayer
+                data={scores}
+                margin={{
+                    top: 10,
+                    right: 30,
+                    left: 0,
+                    bottom: 0,
+                }}
+                >
+                <defs>
+                    <linearGradient id="splitColorStroke" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0.33" stopColor="rgb(61,196,209)" /> 
+                    <stop offset="0.33" stopColor="rgb(221,186,92)" />
+                    <stop offset="0.66" stopColor="rgb(221,186,92)" />
+                    <stop offset="0.66" stopColor="rgb(255,104,102)" />
+                    <stop offset="1" stopColor="rgb(255,104,102)" />
+                    </linearGradient>
+                </defs>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                <XAxis
+                    dataKey="generation"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                />
+                <YAxis domain={[0, 6]} tickLine={false} axisLine={false} tickMargin={10} ticks={[0,2,4,6]} />
+                <ChartTooltip
+                    cursor={{ stroke: 'hsl(var(--primary))', strokeWidth: 1, strokeDasharray: '3 3' }}
+                    content={<ChartTooltipContent indicator="dot" />}
+                />
+                <Area 
+                    type="monotone" 
+                    dataKey="score" 
+                    stroke="url(#splitColorStroke)"
+                    fill="transparent"
+                    strokeWidth={3}
+                    activeDot={activeDot}
+                />
+                </AreaChart>
+            </ResponsiveContainer>
           </ChartContainer>
       </CardContent>
     </Card>
   );
 }
+
